@@ -1,0 +1,15 @@
+# Project directory
+/.idea/
+
+# Project file
+mille_bornes.iml
+
+# Compilated directory
+/out/
+
+# Java files
+/src/Clavier.java
+/src/Ecran.java
+
+# Documents directory
+/docs/

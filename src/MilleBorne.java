@@ -66,7 +66,7 @@ public class MilleBorne {
 	 */
 	static class Joueur {
 		String nom;
-		int km;
+		int km = 0;
 	}
 
 	// ******************************
@@ -91,9 +91,30 @@ public class MilleBorne {
 	public static void main(String args[]) {
 		// déclaration des données
 		Carte crt = new Carte();
+		Joueur j1 = new Joueur();
+		j1.nom = "Valentin";
 
 		// DEBUG
-		Ecran.afficherln(tirerCarte(crt));
-		Ecran.afficherln(crt.nbCartes);
+		int carte = tirerCarte(crt);
+		if(carte > 30) {
+			if(carte == 31) {
+				j1.km += 25;
+			} else {
+				if(carte == 32) {
+					j1.km += 50;
+				} else {
+					if(carte == 33) {
+						j1.km += 75;
+					} else {
+						if(carte == 34) {
+							j1.km += 100;
+						} else {
+							j1.km += 200;
+						}
+					}
+				}
+			}
+		}
+		Ecran.afficherln(j1.km);
 	}
 }

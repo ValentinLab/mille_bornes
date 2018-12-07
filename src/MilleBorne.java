@@ -20,7 +20,7 @@ public class MilleBorne {
 	 *     - carteDefense: le nombre de cartes "Defense" (type 2) <br>
 	 *     - carteDistance: le nombre de cartes "Distance" (type 3)
 	 */
-	static class Carte {
+	public static class Carte {
 		// nombre global de cartes
 		int nbCartes = 100;
 	}
@@ -64,7 +64,7 @@ public class MilleBorne {
 	 * Modélisation d'un joueur.
 	 * Le type agrégé contient le nom et le nombre de kilomètres
 	 */
-	static class Joueur {
+	public static class Joueur {
 		String nom;
 		int km = 0;
 	}

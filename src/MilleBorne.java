@@ -23,11 +23,6 @@ public class MilleBorne {
 	static class Carte {
 		// nombre global de cartes
 		int nbCartes = 100;
-
-		// nombre de carte par catégorie
-		int carteAttaque = 20;
-		int carteDefense = 35;
-		int carteDistance = 45;
 	}
 
 	/**
@@ -38,21 +33,40 @@ public class MilleBorne {
 	 */
 	public static int tirerCarte(Carte crt) {
 		// déclaration des données
-		int typeCarte, numCarte = 0;
+		int typeCarte, numCarte, carte = 0;
 
-		// tirage d'un type de carte
-		typeCarte = nbHasard(1, 100);
+		// initialisation des variables
+		/** le type de carte (Attaque, Défense, Distance) est compris entre 1 et 100
+		 *  c'est une des 100 cartes possibles */
+		typeCarte = nbHasard(1, 100); // type de carte
+		/** chaque type de carte contient 5 cartes différentes */
+		numCarte = nbHasard(1, 5); // numéro de la carte
 
-		// tirage de la carte selon son type
-		if(typeCarte >= 1 && typeCarte <= 20) { // Type 1
-
+		// traitement
+		if(typeCarte >=1 && typeCarte <= 20) { // cartes Attaque
+			typeCarte = 1;
 		} else {
-			if(typeCarte >= 21 && typeCarte <= 55) { // Type 2
-
-			} else { // Type 3
-
+			if(typeCarte >= 21 && typeCarte <= 55) { // cartes Defense
+				typeCarte = 2;
+			} else { // cartes Distance
+				typeCarte = 3;
 			}
 		}
+		carte = typeCarte*10 + numCarte;
+
+		// retrait de la carte du paquet
+		crt.nbCartes = crt.nbCartes - 1;
+
+		return carte;
+	}
+
+	/**
+	 * Modélisation d'un joueur.
+	 * Le type agrégé contient le nom et le nombre de kilomètres
+	 */
+	static class Joueur {
+		String nom;
+		int km;
 	}
 
 	// ******************************
@@ -75,7 +89,11 @@ public class MilleBorne {
 	// ******************************
 
 	public static void main(String args[]) {
+		// déclaration des données
 		Carte crt = new Carte();
+
+		// DEBUG
 		Ecran.afficherln(tirerCarte(crt));
+		Ecran.afficherln(crt.nbCartes);
 	}
 }

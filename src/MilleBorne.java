@@ -21,90 +21,38 @@ public class MilleBorne {
 	 *     - carteDistance: le nombre de cartes "Distance" (type 3)
 	 */
 	static class Carte {
-		int nbCartes = 102;
-		int carteAttaque = 18;
-		int carteDefense = 38;
-		int carteDistance = 46;
+		// nombre global de cartes
+		int nbCartes = 100;
+
+		// nombre de carte par catégorie
+		int carteAttaque = 20;
+		int carteDefense = 35;
+		int carteDistance = 45;
 	}
 
 	/**
 	 * Tirer au sort une carte dans le paquet
+	 *
 	 * @param crt Paquet de carte
 	 * @return Le type de carte retiré (numéro)
 	 */
 	public static int tirerCarte(Carte crt) {
 		// déclaration des données
-		int typeCarte = 0, numCarte = 0;
+		int typeCarte, numCarte = 0;
 
-		// tirage au sort d'un type de carte
-		typeCarte = nbHasard(1, 3);
+		// tirage d'un type de carte
+		typeCarte = nbHasard(1, 100);
 
-		// tirage précis de la carte
-		int nb;
-		switch(typeCarte) {
-			case 1: // carte de type 1
-				nb = nbHasard(1, 18);
-				if(nb >= 1 && nb <= 3) {
-					numCarte = 11;
-				} else {
-					if(nb >= 4 && nb <= 6) {
-						numCarte = 12;
-					} else {
-						if(nb >= 7 && nb <= 9) {
-							numCarte = 13;
-						} else {
-							if(nb >= 10 && nb <= 13) {
-								numCarte = 14;
-							} else {
-								numCarte = 15;
-							}
-						}
-					}
-				}
-				break;
-			case 2: // carte de type 2
-				nb = nbHasard(1, 38);
-				if(nb >= 1 && nb <= 6) {
-					numCarte = 21;
-				} else {
-					if(nb >= 7 && nb <= 12) {
-						numCarte = 22;
-					} else {
-						if(nb >= 13 && nb <= 18) {
-							numCarte = 23;
-						} else {
-							if(nb >= 19 && nb <= 24) {
-								numCarte = 24;
-							} else {
-								numCarte = 25;
-							}
-						}
-					}
-				}
-				break;
-			case 3: // carte de type 3
-				nb = nbHasard(1, 46);
-				if(nb >= 1 && nb <= 10) {
-					numCarte = 31;
-				} else {
-					if(nb >=11 && nb <= 20) {
-						numCarte = 32;
-					} else {
-						if(nb >= 21 && nb <= 30) {
-							numCarte = 33;
-						} else {
-							if(nb >= 31 && nb <= 42) {
-								numCarte = 34;
-							} else {
-								numCarte = 35;
-							}
-						}
-					}
-				}
-				break;
+		// tirage de la carte selon son type
+		if(typeCarte >= 1 && typeCarte <= 20) { // Type 1
+
+		} else {
+			if(typeCarte >= 21 && typeCarte <= 55) { // Type 2
+
+			} else { // Type 3
+
+			}
 		}
-
-		return numCarte;
 	}
 
 	// ******************************

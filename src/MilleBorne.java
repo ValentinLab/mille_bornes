@@ -25,6 +25,64 @@ public class MilleBorne {
 	}
 
 	/**
+	 * Afficher la carte tiré au sort
+	 *
+	 * 1* : Carte attaque
+	 * - 11 : Accident de la route
+	 * - 12 : Panne d'essence
+	 * - 13 : Crevaison
+	 * 2* : Carte défense
+	 * - 21 : Réparation
+	 * - 22 : Essence
+	 * - 23 : Roue de secours
+	 * 3* : Carte distance
+	 * - 31 : 25km
+	 * - 32 : 50km
+	 * - 33 : 100km
+	 *
+	 * @param carte
+	 */
+	public static void afficherCarte(int carte) {
+		// déclaration des données
+		String str = "";
+
+		// traitement
+		switch(carte) {
+			case 11:
+				str = "Accident de la route (Attaque)";
+				break;
+			case 12:
+				str = "Panne d'essence (Attaque)";
+				break;
+			case 13:
+				str = "Crevaison (Attaque)";
+				break;
+			case 21:
+				str = "Réparation (Defense)";
+				break;
+			case 22:
+				str = "Essence (Defense)";
+				break;
+			case 23:
+				str = "Roue de secours (Defense)";
+				break;
+			case 31:
+				str = "25km (Distance)";
+				break;
+			case 32:
+				str = "50km (Distance)";
+				break;
+			case 33:
+				str = "100km (Distance)";
+				break;
+		}
+
+		// affichage
+		Ecran.afficherln("Vous avez pioché la carte ", str, " !");
+		);
+	}
+
+	/**
 	 * Tirer au sort une carte dans le paquet
 	 *
 	 * @param crt Paquet de carte
@@ -160,9 +218,9 @@ public class MilleBorne {
 				Ecran.afficherln("Carte accident.");
 			} else {
 				if(carte == 12) {
-					Ecran.afficherln("Carte crevaison.");
-				} else {
 					Ecran.afficherln("Carte panne d'essence.");
+				} else {
+					Ecran.afficherln("Carte crevaison.");
 				}
 			}
 		} else {

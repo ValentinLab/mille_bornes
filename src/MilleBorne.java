@@ -33,20 +33,20 @@ public class MilleBorne {
 	 */
 	public static int tirerCarte(Carte crt) {
 		// déclaration des données
-		int typeCarte, numCarte, carte = 0;
+		int typeCarte, numCarte, carte;
 
 		// initialisation des variables
-		/** le type de carte (Attaque, Défense, Distance) est compris entre 1 et 100
+		/** le type de carte (Attaque, Défense, Distance) est compris entre 1 et 75
 		 *  c'est une des 100 cartes possibles */
-		typeCarte = nbHasard(1, 100); // type de carte
-		/** chaque type de carte contient 5 cartes différentes */
-		numCarte = nbHasard(1, 5); // numéro de la carte
+		typeCarte = nbHasard(1, 75); // type de carte
+		/** chaque type de carte contient 3 cartes différentes */
+		numCarte = nbHasard(1, 3); // numéro de la carte
 
 		// traitement
-		if(typeCarte >=1 && typeCarte <= 20) { // cartes Attaque
+		if(typeCarte >=1 && typeCarte <= 15) { // cartes Attaque
 			typeCarte = 1;
 		} else {
-			if(typeCarte >= 21 && typeCarte <= 55) { // cartes Defense
+			if(typeCarte >= 16 && typeCarte <= 39) { // cartes Defense
 				typeCarte = 2;
 			} else { // cartes Distance
 				typeCarte = 3;
@@ -61,12 +61,51 @@ public class MilleBorne {
 	}
 
 	/**
+	 * Choisir l'action à réaliser en fonction de la carte tirée au sort
+	 *
+	 * @param carte Numéro de la carte
+	 */
+	public static void choisirActionCarte(int carte, Joueur jr) {
+		if(carte < 20) { // carte Attaque
+			Ecran.afficherln("Attaque !");
+		} else {
+			if(carte < 30) { // carte Defense
+				Ecran.afficherln("Défense !");
+			} else { // carte Distance
+				ajouterKm(carte, jr);
+			}
+		}
+	}
+
+	// ******************************
+	//  Type agrégé Joueur
+	// ******************************
+
+	/**
 	 * Modélisation d'un joueur.
 	 * Le type agrégé contient le nom et le nombre de kilomètres
 	 */
 	public static class Joueur {
 		String nom;
 		int km = 0;
+	}
+
+	/**
+	 * Ajouter des kilomètres à un joueur
+	 *
+	 * @param carte Numéro de la carte
+	 * @param jr Joueur qui joue
+	 */
+	public static void ajouterKm(int carte, Joueur jr) {
+		if(carte == 31) {
+			jr.km += 25;
+		} else {
+			if(carte == 32) {
+				jr.km += 50;
+			} else {
+				jr.km += 100;
+			}
+		}
 	}
 
 	// ******************************
@@ -96,25 +135,7 @@ public class MilleBorne {
 
 		// DEBUG
 		int carte = tirerCarte(crt);
-		if(carte > 30) {
-			if(carte == 31) {
-				j1.km += 25;
-			} else {
-				if(carte == 32) {
-					j1.km += 50;
-				} else {
-					if(carte == 33) {
-						j1.km += 75;
-					} else {
-						if(carte == 34) {
-							j1.km += 100;
-						} else {
-							j1.km += 200;
-						}
-					}
-				}
-			}
-		}
+		choisirActionCarte(carte, j1);
 		Ecran.afficherln(j1.km);
 	}
 }

@@ -21,7 +21,6 @@ public class MilleBorne {
 	 *     - carteDistance: le nombre de cartes "Distance" (type 3)
 	 */
 	public static class Carte {
-		// nombre global de cartes
 		int nbCartes = 100;
 	}
 
@@ -65,16 +64,44 @@ public class MilleBorne {
 	 *
 	 * @param carte Numéro de la carte
 	 */
-	public static void choisirActionCarte(int carte, Joueur jr) {
+	public static void choisirActionCarte(int carte, Joueur j1, Joueur j2) {
 		if(carte < 20) { // carte Attaque
-			Ecran.afficherln("Attaque !");
+			Ecran.afficherln("Vous avez pioché une carte attaque.");
+			ajouterAttaque(carte, j1, j2);
 		} else {
 			if(carte < 30) { // carte Defense
-				Ecran.afficherln("Défense !");
+				Ecran.afficherln("Vous avez pioché une carte défense !");
 			} else { // carte Distance
-				ajouterKm(carte, jr);
+				ajouterKm(carte, j1);
 			}
 		}
+	}
+
+	/**
+	 * Vérifier que le joueur n'est pas déjà bloqué par cette carte
+	 *
+	 * @param jr Joueur qui doit être vérifié
+	 * @param carte Numéro de la carte
+	 * @return Vrai si le joueur est bloqué
+	 */
+	public static boolean estBloque(Joueur jr, int carte) {
+		// dévlaration des données
+		boolean bloque = false;
+
+		// traitement
+		switch(carte) {
+			case 11:
+				bloque = jr.carteAcc;
+				break;
+			case 12:
+				bloque = jr.carteCre;
+				break;
+			case 13:
+				bloque = jr.carteEss;
+				break;
+		}
+
+		return bloque;
 	}
 
 	// ******************************
@@ -83,11 +110,19 @@ public class MilleBorne {
 
 	/**
 	 * Modélisation d'un joueur.
-	 * Le type agrégé contient le nom et le nombre de kilomètres
+	 * Le type agrégé contient le nom, le nombre de kilomètres et la posséssion des cartes Attaques/Défense
 	 */
 	public static class Joueur {
 		String nom;
 		int km = 0;
+
+		boolean carteAcc = false; // carte accident
+		boolean cartePde = false; // carte panne d'essence
+		boolean carteCre = false; // carte crevaison
+
+		boolean carteRpt = false; // carte réparation
+		boolean carteEss = false; // carte essence
+		boolean carteRds = false; // carte roue de secours
 	}
 
 	/**
@@ -97,14 +132,41 @@ public class MilleBorne {
 	 * @param jr Joueur qui joue
 	 */
 	public static void ajouterKm(int carte, Joueur jr) {
+		// déclaration des données
+		int ajout;
+
+		// ajout des km
 		if(carte == 31) {
-			jr.km += 25;
+			ajout = 25;
 		} else {
 			if(carte == 32) {
-				jr.km += 50;
+				ajout = 50;
 			} else {
-				jr.km += 100;
+				ajout = 100;
 			}
+		}
+		jr.km += ajout;
+	}
+
+	/**
+	 * Ajouter une attaque du Joueur 1 au Joueur 2
+	 * @param carte
+	 * @param j1
+	 * @param j2
+	 */
+	public static void ajouterAttaque(int carte, Joueur j1, Joueur j2) {
+		if(!estBloque(j2, carte)) {
+			if(carte == 11) {
+				Ecran.afficherln("Carte accident.");
+			} else {
+				if(carte == 12) {
+					Ecran.afficherln("Carte crevaison.");
+				} else {
+					Ecran.afficherln("Carte panne d'essence.");
+				}
+			}
+		} else {
+			Ecran.afficherln("Le joueur ", j2.nom, "possède déjà cette carte. Vous ne pouvez pas lui en donner une seconde.");
 		}
 	}
 
@@ -131,11 +193,18 @@ public class MilleBorne {
 		// déclaration des données
 		Carte crt = new Carte();
 		Joueur j1 = new Joueur();
+		Joueur j2 = new Joueur();
 		j1.nom = "Valentin";
+
+		// saisie des noms
+		Ecran.afficher("Saisir le nom du joueur 1: ");
+		j1.nom = Clavier.saisirString();
+		Ecran.afficher("Saisir le nom du joueur 2: ");
+		j2.nom = Clavier.saisirString();
+
 
 		// DEBUG
 		int carte = tirerCarte(crt);
-		choisirActionCarte(carte, j1);
-		Ecran.afficherln(j1.km);
+		choisirActionCarte(carte, j1, j2);
 	}
 }

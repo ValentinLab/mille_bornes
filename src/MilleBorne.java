@@ -79,7 +79,6 @@ public class MilleBorne {
 
 		// affichage
 		Ecran.afficherln("Vous avez pioché la carte ", str, " !");
-		);
 	}
 
 	/**

@@ -28,26 +28,26 @@ public class MilleBorne {
 	 * Afficher la carte tiré au sort
 	 *
 	 * 1* : Carte attaque
-	 * - 11 : Accident de la route
-	 * - 12 : Panne d'essence
-	 * - 13 : Crevaison
+	 *  - 11 : Accident de la route
+	 *  - 12 : Panne d'essence
+	 *  - 13 : Crevaison
 	 * 2* : Carte défense
-	 * - 21 : Réparation
-	 * - 22 : Essence
-	 * - 23 : Roue de secours
+	 *  - 21 : Réparation
+	 *  - 22 : Essence
+	 *  - 23 : Roue de secours
 	 * 3* : Carte distance
-	 * - 31 : 25km
-	 * - 32 : 50km
-	 * - 33 : 100km
+	 *  - 31 : 25km
+	 *  - 32 : 50km
+	 *  - 33 : 100km
 	 *
 	 * @param carte
 	 */
-	public static void afficherCarte(int carte) {
+	public static String convertirCarte(int carte) {
 		// déclaration des données
 		String str = "";
 
 		// traitement
-		switch(carte) {
+		switch (carte) {
 			case 11:
 				str = "Accident de la route (Attaque)";
 				break;
@@ -77,8 +77,12 @@ public class MilleBorne {
 				break;
 		}
 
+		return str;
+	}
+
+	public static void afficherTirageCarte(int carte) {
 		// affichage
-		Ecran.afficherln("Vous avez pioché la carte ", str, " !");
+		Ecran.afficherln("Vous avez pioché la carte ", convertirCarte(carte), " !");
 	}
 
 	/**
@@ -122,8 +126,11 @@ public class MilleBorne {
 	 * @param carte Numéro de la carte
 	 */
 	public static void choisirActionCarte(int carte, Joueur j1, Joueur j2) {
+		// affichage de la carte
+		afficherTirageCarte(carte);
+
+		// traitement
 		if(carte < 20) { // carte Attaque
-			Ecran.afficherln("Vous avez pioché une carte attaque.");
 			ajouterAttaque(carte, j1, j2);
 		} else {
 			if(carte < 30) { // carte Defense
@@ -180,6 +187,30 @@ public class MilleBorne {
 		boolean carteRpt = false; // carte réparation
 		boolean carteEss = false; // carte essence
 		boolean carteRds = false; // carte roue de secours
+	}
+
+	public static void afficherJoueur(Joueur jr) {
+		Ecran.afficherln(jr.nom, " - ", jr.km, "km");
+
+		Ecran.afficher(" - Carte attaque: ");
+		if(jr.carteRpt)
+			Ecran.afficher("Accident,");
+		if(jr.carteEss)
+			Ecran.afficher("Panne d'essence ");
+		if(jr.carteRds)
+			Ecran.afficher("Crevaison ");
+		if(!jr.carteRpt && !jr.carteEss && !jr.carteRds)
+			Ecran.afficher("aucune");
+
+		Ecran.afficher("\n - Carte défense: ");
+		if(jr.carteAcc)
+			Ecran.afficher("Réparation,");
+		if(jr.cartePde)
+			Ecran.afficher("Essence ");
+		if(jr.carteCre)
+			Ecran.afficher("Roue de secours ");
+		if(!jr.carteAcc && !jr.cartePde && !jr.carteCre)
+			Ecran.afficher("aucune");
 	}
 
 	/**
@@ -261,7 +292,10 @@ public class MilleBorne {
 
 
 		// DEBUG
+		Ecran.sautDeLigne();
 		int carte = tirerCarte(crt);
 		choisirActionCarte(carte, j1, j2);
+		Ecran.sautDeLigne();
+		afficherJoueur(j1);
 	}
 }

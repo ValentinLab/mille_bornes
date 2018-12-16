@@ -25,7 +25,7 @@ public class MilleBorne {
 	}
 
 	/**
-	 * Afficher la carte tiré au sort
+	 * Convertir le numéro de la carte en nom
 	 *
 	 * 1* : Carte attaque
 	 *  - 11 : Accident de la route
@@ -40,7 +40,7 @@ public class MilleBorne {
 	 *  - 32 : 50km
 	 *  - 33 : 100km
 	 *
-	 * @param carte
+	 * @param carte Numéro de la carte
 	 */
 	public static String convertirCarte(int carte) {
 		// déclaration des données
@@ -80,6 +80,11 @@ public class MilleBorne {
 		return str;
 	}
 
+	/**
+	 * Afficher une carte
+	 *
+	 * @param carte Numéro de la carte à afficher
+	 */
 	public static void afficherTirageCarte(int carte) {
 		// affichage
 		Ecran.afficherln("Vous avez pioché la carte ", convertirCarte(carte), " !");
@@ -124,6 +129,8 @@ public class MilleBorne {
 	 * Choisir l'action à réaliser en fonction de la carte tirée au sort
 	 *
 	 * @param carte Numéro de la carte
+	 * @param j1 Premier joueur
+	 * @param j2 Deuxième joueur
 	 */
 	public static void choisirActionCarte(int carte, Joueur j1, Joueur j2) {
 		// affichage de la carte
@@ -142,7 +149,7 @@ public class MilleBorne {
 	}
 
 	/**
-	 * Vérifier que le joueur n'est pas déjà bloqué par cette carte
+	 * Vérifier que le joueur n'est pas déjà bloqué par une carte
 	 *
 	 * @param jr Joueur qui doit être vérifié
 	 * @param carte Numéro de la carte
@@ -189,6 +196,11 @@ public class MilleBorne {
 		boolean carteRds = false; // carte roue de secours
 	}
 
+	/**
+	 * Afficher les informations d'un joueur
+	 *
+	 * @param jr Joueur à afficher
+	 */
 	public static void afficherJoueur(Joueur jr) {
 		Ecran.afficherln(jr.nom, " - ", jr.km, "km");
 
@@ -238,9 +250,10 @@ public class MilleBorne {
 
 	/**
 	 * Ajouter une attaque du Joueur 1 au Joueur 2
-	 * @param carte
-	 * @param j1
-	 * @param j2
+	 *
+	 * @param carte Numéro de la carte
+	 * @param j1 Premier joueur
+	 * @param j2 Deuxième joueur
 	 */
 	public static void ajouterAttaque(int carte, Joueur j1, Joueur j2) {
 		if(!estBloque(j2, carte)) {

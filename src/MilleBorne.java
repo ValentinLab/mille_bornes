@@ -206,21 +206,21 @@ public class MilleBorne {
 
 		Ecran.afficher(" - Carte attaque: ");
 		if(jr.carteAcc)
-			Ecran.afficher("Réparation,");
+			Ecran.afficher("Accident");
 		if(jr.cartePde)
-			Ecran.afficher("Essence ");
+			Ecran.afficher("Panne d'essence");
 		if(jr.carteCre)
-			Ecran.afficher("Roue de secours ");
+			Ecran.afficher("Crevaison");
 		if(!jr.carteAcc && !jr.cartePde && !jr.carteCre)
 			Ecran.afficher("aucune");
 
 		Ecran.afficher("\n - Carte défense: ");
 		if(jr.carteRpt)
-			Ecran.afficher("Accident,");
+			Ecran.afficher("Réparation ");
 		if(jr.carteEss)
-			Ecran.afficher("Panne d'essence ");
+			Ecran.afficher("Essence ");
 		if(jr.carteRds)
-			Ecran.afficher("Crevaison ");
+			Ecran.afficher("Roue de secours");
 		if(!jr.carteRpt && !jr.carteEss && !jr.carteRds)
 			Ecran.afficher("aucune");
 	}
@@ -256,14 +256,15 @@ public class MilleBorne {
 	 * @param j2 Deuxième joueur
 	 */
 	public static void ajouterAttaque(int carte, Joueur j1, Joueur j2) {
+		/** Vérifie si le joueur adverse est déjà bloqué par une carte attaque */
 		if(!estBloque(j2, carte)) {
-			if(carte == 11) {
-				j1.carteAcc = true;
+			if(carte == 11) { // carte accident
+				j2.carteAcc = true;
 			} else {
-				if(carte == 12) {
-					j1.cartePde = true;
-				} else {
-					j1.carteCre = true;
+				if(carte == 12) { // carte panne d'essence
+					j2.cartePde = true;
+				} else { // carte crevaison
+					j2.carteCre = true;
 				}
 			}
 		} else {
@@ -307,9 +308,10 @@ public class MilleBorne {
 		 * DEBUG
 		 */
 
-		// tirage de la carte
+		// tirage de la carte (tour de joueur 1)
 		Ecran.sautDeLigne();
 		int carte = tirerCarte(crt);
+		Ecran.afficherln(j1.nom, " commence à jouer...");
 		choisirActionCarte(carte, j1, j2);
 
 		// affichage des joueurs

@@ -155,21 +155,13 @@ public class MilleBorne {
 	 * @param carte Numéro de la carte
 	 * @return Vrai si le joueur est bloqué
 	 */
-	public static boolean estBloque(Joueur jr, int carte) {
+	public static boolean estBloque(Joueur jr) {
 		// dévlaration des données
 		boolean bloque = false;
 
 		// traitement
-		switch(carte) {
-			case 11:
-				bloque = jr.carteAcc;
-				break;
-			case 12:
-				bloque = jr.carteCre;
-				break;
-			case 13:
-				bloque = jr.carteEss;
-				break;
+		if(jr.carteAcc || jr.cartePde || jr.carteCre) {
+			bloque = true;
 		}
 
 		return bloque;
@@ -236,16 +228,21 @@ public class MilleBorne {
 		int ajout;
 
 		// ajout des km
-		if(carte == 31) {
-			ajout = 25;
-		} else {
-			if(carte == 32) {
-				ajout = 50;
+		/** Vérifier que le joueur n'est pas bloqué par une carte attaque */
+		if(!estBloque(jr)) {
+			if(carte == 31) {
+				ajout = 25;
 			} else {
-				ajout = 100;
+				if(carte == 32) {
+					ajout = 50;
+				} else {
+					ajout = 100;
+				}
 			}
+			jr.km += ajout;
+		} else {
+			Ecran.afficher("Vous êtes déjà bloqué par une carte attaque.");
 		}
-		jr.km += ajout;
 	}
 
 	/**
@@ -257,7 +254,7 @@ public class MilleBorne {
 	 */
 	public static void ajouterAttaque(int carte, Joueur j1, Joueur j2) {
 		/** Vérifie si le joueur adverse est déjà bloqué par une carte attaque */
-		if(!estBloque(j2, carte)) {
+		if(!estBloque(j2)) {
 			if(carte == 11) { // carte accident
 				j2.carteAcc = true;
 			} else {
@@ -302,7 +299,6 @@ public class MilleBorne {
 		j1.nom = Clavier.saisirString();
 		Ecran.afficher("Saisir le nom du joueur 2: ");
 		j2.nom = Clavier.saisirString();
-
 
 		/*
 		 * DEBUG

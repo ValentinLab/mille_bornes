@@ -205,16 +205,6 @@ public class MilleBorne {
 		Ecran.afficherln(jr.nom, " - ", jr.km, "km");
 
 		Ecran.afficher(" - Carte attaque: ");
-		if(jr.carteRpt)
-			Ecran.afficher("Accident,");
-		if(jr.carteEss)
-			Ecran.afficher("Panne d'essence ");
-		if(jr.carteRds)
-			Ecran.afficher("Crevaison ");
-		if(!jr.carteRpt && !jr.carteEss && !jr.carteRds)
-			Ecran.afficher("aucune");
-
-		Ecran.afficher("\n - Carte défense: ");
 		if(jr.carteAcc)
 			Ecran.afficher("Réparation,");
 		if(jr.cartePde)
@@ -222,6 +212,16 @@ public class MilleBorne {
 		if(jr.carteCre)
 			Ecran.afficher("Roue de secours ");
 		if(!jr.carteAcc && !jr.cartePde && !jr.carteCre)
+			Ecran.afficher("aucune");
+
+		Ecran.afficher("\n - Carte défense: ");
+		if(jr.carteRpt)
+			Ecran.afficher("Accident,");
+		if(jr.carteEss)
+			Ecran.afficher("Panne d'essence ");
+		if(jr.carteRds)
+			Ecran.afficher("Crevaison ");
+		if(!jr.carteRpt && !jr.carteEss && !jr.carteRds)
 			Ecran.afficher("aucune");
 	}
 
@@ -258,12 +258,12 @@ public class MilleBorne {
 	public static void ajouterAttaque(int carte, Joueur j1, Joueur j2) {
 		if(!estBloque(j2, carte)) {
 			if(carte == 11) {
-				Ecran.afficherln("Carte accident.");
+				j1.carteAcc = true;
 			} else {
 				if(carte == 12) {
-					Ecran.afficherln("Carte panne d'essence.");
+					j1.cartePde = true;
 				} else {
-					Ecran.afficherln("Carte crevaison.");
+					j1.carteCre = true;
 				}
 			}
 		} else {
@@ -295,7 +295,6 @@ public class MilleBorne {
 		Carte crt = new Carte();
 		Joueur j1 = new Joueur();
 		Joueur j2 = new Joueur();
-		j1.nom = "Valentin";
 
 		// saisie des noms
 		Ecran.afficher("Saisir le nom du joueur 1: ");
@@ -304,11 +303,19 @@ public class MilleBorne {
 		j2.nom = Clavier.saisirString();
 
 
-		// DEBUG
+		/*
+		 * DEBUG
+		 */
+
+		// tirage de la carte
 		Ecran.sautDeLigne();
 		int carte = tirerCarte(crt);
 		choisirActionCarte(carte, j1, j2);
+
+		// affichage des joueurs
 		Ecran.sautDeLigne();
 		afficherJoueur(j1);
+		Ecran.sautDeLigne();
+		afficherJoueur(j2);
 	}
 }

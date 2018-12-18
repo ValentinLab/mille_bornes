@@ -285,6 +285,7 @@ public class MilleBorne {
 					} else {
 						Ecran.afficher("Vous n'êtes pas bloqué par une carte accident pour le moment");
 					}
+					break;
 				case 22:
 					if(jr.cartePde) {
 						Ecran.afficher("La carte essence annule la carte panne d'essence.");
@@ -292,6 +293,7 @@ public class MilleBorne {
 					} else {
 						Ecran.afficher("Vous n'êtes pas bloqué par une carte accident pour le moment");
 					}
+					break;
 				case 23:
 					if(jr.carteCre) {
 					Ecran.afficher("La carte roue de secours annule la carte crevaison.");
@@ -299,10 +301,45 @@ public class MilleBorne {
 				} else {
 					Ecran.afficher("Vous n'êtes pas bloqué par une carte crevaison pour le moment");
 				}
+				break;
 			}
 		} else {
 			Ecran.afficher("Vous n'êtes pas bloqué par une carte attaque pour le moment");
 			// TODO proposer de stocker la carte
+		}
+	}
+
+	/**
+	 * Stocker une carte defense pour un joueur
+	 *
+	 * @param carte Numéro de la carte à stocker
+	 * @param jr Joueur qui enregistre la carte
+	 */
+	public static void stockerCarte(int carte, Joueur jr) {
+		char rep;
+
+		Ecran.afficher("Souhaitez-vous stocker votre carte pour l'utiliser plus tard ? (o/n)");
+		rep = Clavier.saisirChar();
+		while(rep != 'o' && rep != 'O' && rep != 'n' && rep != 'N') {
+			Ecran.afficher("Souhaitez-vous stocker votre carte pour l'utiliser plus tard ? (o/n)");
+			rep = Clavier.saisirChar();
+		}
+
+		if(rep == 'o' || rep == 'O') {
+			Ecran.afficher("Carte stocké !");
+			switch(carte) {
+				case 21:
+					jr.carteRpt = true;
+					break;
+				case 22:
+					jr.carteEss = true;
+					break;
+				case 23:
+					jr.carteRds = true;
+					break;
+			}
+		} else {
+			Ecran.afficher("La carte n'est pas stocké.");
 		}
 	}
 

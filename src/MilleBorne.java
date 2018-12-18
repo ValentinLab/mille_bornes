@@ -167,6 +167,40 @@ public class MilleBorne {
 		return bloque;
 	}
 
+	/**
+	 * Stocker une carte defense pour un joueur
+	 *
+	 * @param carte Numéro de la carte à stocker
+	 * @param jr Joueur qui enregistre la carte
+	 */
+	public static void stockerCarte(int carte, Joueur jr) {
+		char rep;
+
+		Ecran.afficher("Souhaitez-vous stocker votre carte pour l'utiliser plus tard ? (o/n) ");
+		rep = Clavier.saisirChar();
+		while(rep != 'o' && rep != 'O' && rep != 'n' && rep != 'N') {
+			Ecran.afficher("Souhaitez-vous stocker votre carte pour l'utiliser plus tard ? (o/n) ");
+			rep = Clavier.saisirChar();
+		}
+
+		if(rep == 'o' || rep == 'O') {
+			Ecran.afficherln("Carte stocké !");
+			switch(carte) {
+				case 21:
+					jr.carteRpt = true;
+					break;
+				case 22:
+					jr.carteEss = true;
+					break;
+				case 23:
+					jr.carteRds = true;
+					break;
+			}
+		} else {
+			Ecran.afficherln("La carte n'est pas stocké.");
+		}
+	}
+
 	// ******************************
 	//  Type agrégé Joueur
 	// ******************************
@@ -272,15 +306,43 @@ public class MilleBorne {
 	/**
 	 * Ajouter une défense à un joueur
 	 *
-	 * @param carte Numéro de la cartte
+	 * @param carte Numéro de la carte
 	 * @param jr Joueur qui joue
 	 */
 	public static void ajouterDefense(int carte, Joueur jr) {
 		if(estBloque(jr)) {
-			Ecran.afficher("Vous pouvez peut-être utiliser la carte.");
+			switch(carte) {
+				case 21:
+					if(jr.carteAcc) {
+						Ecran.afficher("La carte réparation annule la carte accident.");
+						jr.carteAcc = false;
+					} else {
+						Ecran.afficherln("Vous n'êtes pas bloqué par une carte accident pour le moment.");
+						stockerCarte(carte, jr);
+					}
+					break;
+				case 22:
+					if(jr.cartePde) {
+						Ecran.afficher("La carte essence annule la carte panne d'essence.");
+						jr.cartePde = false;
+					} else {
+						Ecran.afficherln("Vous n'êtes pas bloqué par une carte accident pour le moment.");
+						stockerCarte(carte, jr);
+					}
+					break;
+				case 23:
+					if(jr.carteCre) {
+					Ecran.afficher("La carte roue de secours annule la carte crevaison.");
+					jr.carteCre = false;
+				} else {
+					Ecran.afficherln("Vous n'êtes pas bloqué par une carte crevaison pour le moment.");
+					stockerCarte(carte, jr);
+					}
+				break;
+			}
 		} else {
-			Ecran.afficher("Vous n'êtes pas bloqué par une carte attaque...");
-			// TODO proposer de stocker la carte
+			Ecran.afficherln("Vous n'êtes pas bloqué par une carte attaque pour le moment.");
+			stockerCarte(carte, jr);
 		}
 	}
 

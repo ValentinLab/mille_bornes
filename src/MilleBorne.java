@@ -272,14 +272,36 @@ public class MilleBorne {
 	/**
 	 * Ajouter une défense à un joueur
 	 *
-	 * @param carte Numéro de la cartte
+	 * @param carte Numéro de la carte
 	 * @param jr Joueur qui joue
 	 */
 	public static void ajouterDefense(int carte, Joueur jr) {
 		if(estBloque(jr)) {
-			Ecran.afficher("Vous pouvez peut-être utiliser la carte.");
+			switch(carte) {
+				case 21:
+					if(jr.carteAcc) {
+						Ecran.afficher("La carte réparation annule la carte accident.");
+						jr.carteAcc = false;
+					} else {
+						Ecran.afficher("Vous n'êtes pas bloqué par une carte accident pour le moment");
+					}
+				case 22:
+					if(jr.cartePde) {
+						Ecran.afficher("La carte essence annule la carte panne d'essence.");
+						jr.cartePde = false;
+					} else {
+						Ecran.afficher("Vous n'êtes pas bloqué par une carte accident pour le moment");
+					}
+				case 23:
+					if(jr.carteCre) {
+					Ecran.afficher("La carte roue de secours annule la carte crevaison.");
+					jr.carteCre = false;
+				} else {
+					Ecran.afficher("Vous n'êtes pas bloqué par une carte crevaison pour le moment");
+				}
+			}
 		} else {
-			Ecran.afficher("Vous n'êtes pas bloqué par une carte attaque...");
+			Ecran.afficher("Vous n'êtes pas bloqué par une carte attaque pour le moment");
 			// TODO proposer de stocker la carte
 		}
 	}

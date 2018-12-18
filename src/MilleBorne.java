@@ -141,7 +141,7 @@ public class MilleBorne {
 			ajouterAttaque(carte, j1, j2);
 		} else {
 			if(carte < 30) { // carte Defense
-				Ecran.afficherln("Vous avez pioché une carte défense !");
+				ajouterDefense(carte, j1);
 			} else { // carte Distance
 				ajouterKm(carte, j1);
 			}
@@ -249,8 +249,8 @@ public class MilleBorne {
 	 * Ajouter une attaque du Joueur 1 au Joueur 2
 	 *
 	 * @param carte Numéro de la carte
-	 * @param j1 Premier joueur
-	 * @param j2 Deuxième joueur
+	 * @param j1 Joueur qui joue
+	 * @param j2 Joueur adverse
 	 */
 	public static void ajouterAttaque(int carte, Joueur j1, Joueur j2) {
 		/** Vérifie si le joueur adverse est déjà bloqué par une carte attaque */
@@ -266,6 +266,21 @@ public class MilleBorne {
 			}
 		} else {
 			Ecran.afficherln("Le joueur ", j2.nom, "possède déjà cette carte. Vous ne pouvez pas lui en donner une seconde.");
+		}
+	}
+
+	/**
+	 * Ajouter une défense à un joueur
+	 *
+	 * @param carte Numéro de la cartte
+	 * @param jr Joueur qui joue
+	 */
+	public static void ajouterDefense(int carte, Joueur jr) {
+		if(estBloque(jr)) {
+			Ecran.afficher("Vous pouvez peut-être utiliser la carte.");
+		} else {
+			Ecran.afficher("Vous n'êtes pas bloqué par une carte attaque...");
+			// TODO proposer de stocker la carte
 		}
 	}
 

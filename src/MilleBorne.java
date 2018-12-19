@@ -222,6 +222,12 @@ public class MilleBorne {
 		boolean carteRds = false; // carte roue de secours
 	}
 
+	/**
+	 * Saisir les noms des joueurs
+	 *
+	 * @param j1 Premier joueur
+	 * @param j2 Deuxième joueur
+	 */
 	public static void saisirNom(Joueur j1, Joueur j2) {
 		Ecran.afficher("Saisir le nom du joueur 1: ");
 		j1.nom = Clavier.saisirString();
@@ -385,12 +391,34 @@ public class MilleBorne {
 		 * DEBUG
 		 */
 
-		// tirage de la carte (tour de joueur 1)
-		// TODO vérifier si le joueur a une carte attaque et si une carte défense est stocké
+		// tour de jeu (pour Joueur 1)
 		Ecran.sautDeLigne();
-		int carte = tirerCarte(crt);
 		Ecran.afficherln(j1.nom, " commence à jouer...");
-		choisirActionCarte(carte, j1, j2);
+		if(estBloque(j1)) {
+			Ecran.afficherln("Vous êtes bloqué par une carte.");
+		} else {
+			int carte = tirerCarte(crt);
+			choisirActionCarte(carte, j1, j2);
+		}
+
+		// affichage des joueurs
+		Ecran.sautDeLigne();
+		afficherJoueur(j1);
+		Ecran.sautDeLigne();
+		afficherJoueur(j2);
+
+		// CHANGEMENT DE JOUEUR
+
+		// tour de jeu (pour Joueur 2)
+		Ecran.sautDeLigne();
+		Ecran.sautDeLigne();
+		Ecran.afficherln(j2.nom, " joue,..");
+		if(estBloque(j2)) {
+			Ecran.afficherln("Vous êtes bloqué par une carte.");
+		} else {
+			int carte = tirerCarte(crt);
+			choisirActionCarte(carte, j2, j1);
+		}
 
 		// affichage des joueurs
 		Ecran.sautDeLigne();

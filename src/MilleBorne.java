@@ -374,6 +374,22 @@ public class MilleBorne {
 		return(borne_inf + (int)(Math.random() * (borne_sup - borne_inf + 1)));
 	}
 
+	/**
+	 * Jouer un tour de jeu, i.e. tirer une carte ou retirer une attaque
+	 *
+	 * @param j1 Joueur qui joue le tour
+	 * @param j2 Joueur adverse
+	 * @param crt Paquet de carte
+	 */
+	public static void jouerTour(Joueur j1, Joueur j2, Carte crt) {
+		if(estBloque(j1)) {
+			Ecran.afficherln("Vous êtes bloqué par une carte.");
+		} else {
+			int carteNum = tirerCarte(crt);
+			choisirActionCarte(carteNum, j1, j2);
+		}
+	}
+
 	// ******************************
 	//  Main
 	// ******************************
@@ -394,12 +410,7 @@ public class MilleBorne {
 		// tour de jeu (pour Joueur 1)
 		Ecran.sautDeLigne();
 		Ecran.afficherln(j1.nom, " commence à jouer...");
-		if(estBloque(j1)) {
-			Ecran.afficherln("Vous êtes bloqué par une carte.");
-		} else {
-			int carte = tirerCarte(crt);
-			choisirActionCarte(carte, j1, j2);
-		}
+		jouerTour(j1, j2, crt);
 
 		// affichage des joueurs
 		Ecran.sautDeLigne();
@@ -413,12 +424,7 @@ public class MilleBorne {
 		Ecran.sautDeLigne();
 		Ecran.sautDeLigne();
 		Ecran.afficherln(j2.nom, " joue,..");
-		if(estBloque(j2)) {
-			Ecran.afficherln("Vous êtes bloqué par une carte.");
-		} else {
-			int carte = tirerCarte(crt);
-			choisirActionCarte(carte, j2, j1);
-		}
+		jouerTour(j2, j1, crt);
 
 		// affichage des joueurs
 		Ecran.sautDeLigne();

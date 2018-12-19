@@ -222,6 +222,13 @@ public class MilleBorne {
 		boolean carteRds = false; // carte roue de secours
 	}
 
+	public static void saisirNom(Joueur j1, Joueur j2) {
+		Ecran.afficher("Saisir le nom du joueur 1: ");
+		j1.nom = Clavier.saisirString();
+		Ecran.afficher("Saisir le nom du joueur 2: ");
+		j2.nom = Clavier.saisirString();
+	}
+
 	/**
 	 * Afficher les informations d'un joueur
 	 *
@@ -372,16 +379,14 @@ public class MilleBorne {
 		Joueur j2 = new Joueur();
 
 		// saisie des noms
-		Ecran.afficher("Saisir le nom du joueur 1: ");
-		j1.nom = Clavier.saisirString();
-		Ecran.afficher("Saisir le nom du joueur 2: ");
-		j2.nom = Clavier.saisirString();
+		saisirNom(j1, j2);
 
 		/*
 		 * DEBUG
 		 */
 
 		// tirage de la carte (tour de joueur 1)
+		// TODO vérifier si le joueur a une carte attaque et si une carte défense est stocké
 		Ecran.sautDeLigne();
 		int carte = tirerCarte(crt);
 		Ecran.afficherln(j1.nom, " commence à jouer...");

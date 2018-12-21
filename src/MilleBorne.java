@@ -381,12 +381,24 @@ public class MilleBorne {
 	 * @param j2 Joueur adverse
 	 * @param crt Paquet de carte
 	 */
-	public static void jouerTour(Joueur j1, Joueur j2, Carte crt) {
+	public static void choisirJouerTour(Joueur j1, Joueur j2, Carte crt) {
+		// déclaration des données
+		boolean bloque = false, defense = false;
+
+		// vérificationd de l'état du joueur
 		if(estBloque(j1)) {
-			Ecran.afficherln("Vous êtes bloqué par une carte.");
-		} else {
-			int carteNum = tirerCarte(crt);
-			choisirActionCarte(carteNum, j1, j2);
+			bloque = true;
+			if(j1.carteAcc && j1.carteRpt) {
+				defense = true;
+			} else {
+				if(j1.cartePde && j1.carteEss) {
+					defense = true;
+				} else {
+					if(j1.carteCre && j1.carteRds) {
+						defense = true;
+					}
+				}
+			}
 		}
 	}
 
@@ -410,7 +422,7 @@ public class MilleBorne {
 		// tour de jeu (pour Joueur 1)
 		Ecran.sautDeLigne();
 		Ecran.afficherln(j1.nom, " commence à jouer...");
-		jouerTour(j1, j2, crt);
+		choisirJouerTour(j1, j2, crt);
 
 		// affichage des joueurs
 		Ecran.sautDeLigne();
@@ -424,7 +436,7 @@ public class MilleBorne {
 		Ecran.sautDeLigne();
 		Ecran.sautDeLigne();
 		Ecran.afficherln(j2.nom, " joue,..");
-		jouerTour(j2, j1, crt);
+		choisirJouerTour(j2, j1, crt);
 
 		// affichage des joueurs
 		Ecran.sautDeLigne();

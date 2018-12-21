@@ -477,24 +477,21 @@ public class MilleBorne {
 		return joueur;
 	}
 
-	// ******************************
-	//  Main
-	// ******************************
-
-	public static void main(String args[]) {
-		// déclaration des données
-		Carte crt = new Carte();
-		Joueur j1 = new Joueur();
-		Joueur j2 = new Joueur();
-		int joueur;
-
+	/**
+	 * Lancement de la partie principale du jeu
+	 *
+	 * @param j1 Joueur 1
+	 * @param j2 Joueur 2
+	 * @param crt Paquet de cartes
+	 */
+	public static void jouerTour(Joueur j1, Joueur j2, Carte crt) {
 		// saisie des noms
 		saisirNom(j1, j2);
 
-		// tirage au sort du premier joueur
-		joueur = tirerPremierJoueur(j1, j2);
+		// déclaration des données
+		int joueur = tirerPremierJoueur(j1, j2);
 
-		// tours de jeu
+		// boucle de jeu
 		do {
 			// choix de l'action de jeu
 			if(joueur == 1) {   // tour du joueur 1
@@ -518,5 +515,23 @@ public class MilleBorne {
 				joueur = 1;
 			}
 		} while(j1.km < 1000 || j2.km < 1000);
+	}
+
+	// ******************************
+	//  Main
+	// ******************************
+
+	public static void main(String args[]) {
+		// déclaration des données
+		Carte crt = new Carte();
+		Joueur j1 = new Joueur();
+		Joueur j2 = new Joueur();
+		int joueur;
+
+		// affichage du titre
+		Ecran.afficherln("JEU DU MILLE BORNES\n");
+
+		// tours de jeu
+		jouerTour(j1, j2, crt);
 	}
 }

@@ -303,17 +303,19 @@ public class MilleBorne {
 	public static void ajouterAttaque(int carte, Joueur j1, Joueur j2) {
 		/** Vérifie si le joueur adverse est déjà bloqué par une carte attaque */
 		if(!estBloque(j2)) {
-			if(carte == 11) { // carte accident
-				j2.carteAcc = true;
-			} else {
-				if(carte == 12) { // carte panne d'essence
+			switch(carte) {
+				case 11:
+					j2.carteAcc = true;
+					break;
+				case 12:
 					j2.cartePde = true;
-				} else { // carte crevaison
+					break;
+				case 13:
 					j2.carteCre = true;
-				}
+					break;
 			}
 		} else {
-			Ecran.afficherln("Le joueur ", j2.nom, "possède déjà cette carte. Vous ne pouvez pas lui en donner une seconde.");
+			Ecran.afficherln(j2.nom, " possède déjà une carte attaque. Vous ne pouvez pas lui en donner une seconde...");
 		}
 	}
 
@@ -328,7 +330,7 @@ public class MilleBorne {
 			switch(carte) {
 				case 21:
 					if(jr.carteAcc) {
-						Ecran.afficher("La carte réparation annule la carte accident.");
+						Ecran.afficherln("La carte réparation annule la carte accident.");
 						jr.carteAcc = false;
 					} else {
 						Ecran.afficherln("Vous n'êtes pas bloqué par une carte accident pour le moment.");
@@ -337,20 +339,20 @@ public class MilleBorne {
 					break;
 				case 22:
 					if(jr.cartePde) {
-						Ecran.afficher("La carte essence annule la carte panne d'essence.");
+						Ecran.afficherln("La carte essence annule la carte panne d'essence.");
 						jr.cartePde = false;
 					} else {
-						Ecran.afficherln("Vous n'êtes pas bloqué par une carte accident pour le moment.");
+						Ecran.afficherln("Vous n'êtes pas bloqué par une carte panne d'essence pour le moment.");
 						stockerCarte(carte, jr);
 					}
 					break;
 				case 23:
 					if(jr.carteCre) {
-					Ecran.afficher("La carte roue de secours annule la carte crevaison.");
-					jr.carteCre = false;
-				} else {
-					Ecran.afficherln("Vous n'êtes pas bloqué par une carte crevaison pour le moment.");
-					stockerCarte(carte, jr);
+						Ecran.afficher("La carte roue de secours annule la carte crevaison.");
+						jr.carteCre = false;
+					} else {
+						Ecran.afficherln("Vous n'êtes pas bloqué par une carte crevaison pour le moment.");
+						stockerCarte(carte, jr);
 					}
 				break;
 			}
@@ -438,11 +440,14 @@ public class MilleBorne {
 						Ecran.afficher("Vous n'êtes maintenant plus bloqué par une carte attaque !");
 						if(j1.carteAcc) {
 							j1.carteAcc = false;
+							j1.carteRpt = false;
 						} else {
 							if(j1.cartePde) {
 								j1.cartePde = false;
+								j1.carteEss = false;
 							} else {
 								j1.carteCre = false;
+								j1.carteRds = false;
 							}
 						}
 					}
@@ -533,5 +538,9 @@ public class MilleBorne {
 
 		// tours de jeu
 		jouerTour(j1, j2, crt);
+		// TODO problème en utilisant une carte defense stocké
+
+		// fin du jeu
+		// TODO fin du jeu
 	}
 }

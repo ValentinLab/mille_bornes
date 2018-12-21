@@ -462,37 +462,42 @@ public class MilleBorne {
 		Carte crt = new Carte();
 		Joueur j1 = new Joueur();
 		Joueur j2 = new Joueur();
+		int joueur;
 
 		// saisie des noms
 		saisirNom(j1, j2);
 
-		/*
-		 * DEBUG
-		 */
+		// tirage au sort du premier joueur
+		joueur = nbHasard(1, 2);
+		if(joueur == 1) {
+			Ecran.afficherln("C'est ", j1.nom, " qui commence à jouer !");
+		} else {
+			Ecran.afficherln("C'est ", j2.nom, " qui commence à jouer !");
+		}
 
-		// tour de jeu (pour Joueur 1)
-		Ecran.sautDeLigne();
-		Ecran.afficherln(j1.nom, " commence à jouer...");
-		choisirJouerTour(j1, j2, crt);
+		// tours de jeu
+		do {
+			// choix de l'action de jeu
+			if(joueur == 1) {   // tour du joueur 1
+				Ecran.afficherln("Au tour de ", j1.nom, "...");
+				choisirJouerTour(j1, j2, crt);
+			} else { 			// tour du joueur 2
+				Ecran.afficherln("Au tour de ", j2.nom, "...");
+				choisirJouerTour(j2, j1, crt);
+			}
 
-		// affichage des joueurs
-		Ecran.sautDeLigne();
-		afficherJoueur(j1);
-		Ecran.sautDeLigne();
-		afficherJoueur(j2);
+			// affichage de l'état des joueurs
+			Ecran.sautDeLigne();
+			afficherJoueur(j1);
+			Ecran.sautDeLigne();
+			afficherJoueur(j2);
 
-		// CHANGEMENT DE JOUEUR
-
-		// tour de jeu (pour Joueur 2)
-		Ecran.sautDeLigne();
-		Ecran.sautDeLigne();
-		Ecran.afficherln(j2.nom, " joue,..");
-		choisirJouerTour(j2, j1, crt);
-
-		// affichage des joueurs
-		Ecran.sautDeLigne();
-		afficherJoueur(j1);
-		Ecran.sautDeLigne();
-		afficherJoueur(j2);
+			// changement de joueur
+			if(joueur == 1) {
+				joueur = 2;
+			} else {
+				joueur = 1;
+			}
+		} while(j1.km < 1000 || j2.km < 1000);
 	}
 }

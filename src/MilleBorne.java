@@ -262,6 +262,7 @@ public class MilleBorne {
 			Ecran.afficher("Roue de secours");
 		if(!jr.carteRpt && !jr.carteEss && !jr.carteRds)
 			Ecran.afficher("aucune");
+		Ecran.sautDeLigne();
 	}
 
 	/**
@@ -288,7 +289,7 @@ public class MilleBorne {
 			}
 			jr.km += ajout;
 		} else {
-			Ecran.afficher("Vous êtes déjà bloqué par une carte attaque.");
+			Ecran.afficherln("Vous êtes déjà bloqué par une carte attaque.");
 		}
 	}
 
@@ -453,6 +454,29 @@ public class MilleBorne {
 		}
 	}
 
+	/**
+	 * Tirer au sort quel joueur commence à jouer
+	 *
+	 * @param j1 joueur 1
+	 * @param j2 Joueur 2
+	 * @return Le numéro du joueur qui commence
+	 */
+	public static int tirerPremierJoueur(Joueur j1, Joueur j2) {
+		// déclaration des variables
+		int joueur;
+
+		// traitement et affichage
+		joueur = nbHasard(1, 2);
+		if(joueur == 1) {
+			Ecran.afficherln("\nC'est ", j1.nom, " qui commence à jouer !");
+		} else {
+			Ecran.afficherln("\nC'est ", j2.nom, " qui commence à jouer !");
+		}
+		Ecran.sautDeLigne();
+
+		return joueur;
+	}
+
 	// ******************************
 	//  Main
 	// ******************************
@@ -468,12 +492,7 @@ public class MilleBorne {
 		saisirNom(j1, j2);
 
 		// tirage au sort du premier joueur
-		joueur = nbHasard(1, 2);
-		if(joueur == 1) {
-			Ecran.afficherln("C'est ", j1.nom, " qui commence à jouer !");
-		} else {
-			Ecran.afficherln("C'est ", j2.nom, " qui commence à jouer !");
-		}
+		joueur = tirerPremierJoueur(j1, j2);
 
 		// tours de jeu
 		do {
@@ -489,8 +508,8 @@ public class MilleBorne {
 			// affichage de l'état des joueurs
 			Ecran.sautDeLigne();
 			afficherJoueur(j1);
-			Ecran.sautDeLigne();
 			afficherJoueur(j2);
+			Ecran.sautDeLigne();
 
 			// changement de joueur
 			if(joueur == 1) {

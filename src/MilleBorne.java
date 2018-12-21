@@ -102,7 +102,7 @@ public class MilleBorne {
 
 		// initialisation des variables
 		/** le type de carte (Attaque, Défense, Distance) est compris entre 1 et 75
-		 *  c'est une des 100 cartes possibles */
+		 *  c'est une des 75 cartes possibles */
 		typeCarte = nbHasard(1, 75); // type de carte
 		/** chaque type de carte contient 3 cartes différentes */
 		numCarte = nbHasard(1, 3); // numéro de la carte
@@ -375,7 +375,7 @@ public class MilleBorne {
 	}
 
 	/**
-	 * Jouer un tour de jeu, i.e. tirer une carte ou retirer une attaque
+	 * Jouer un tour de jeu, i.e. tirer une carte, retirer une attaque ou ne rien faire
 	 *
 	 * @param j1 Joueur qui joue le tour
 	 * @param j2 Joueur adverse
@@ -384,6 +384,7 @@ public class MilleBorne {
 	public static void choisirJouerTour(Joueur j1, Joueur j2, Carte crt) {
 		// déclaration des données
 		boolean bloque = false, defense = false;
+		int choix, carteNum;
 
 		// vérificationd de l'état du joueur
 		if(estBloque(j1)) {
@@ -399,6 +400,56 @@ public class MilleBorne {
 					}
 				}
 			}
+		}
+
+		// proposition et choix
+		Ecran.afficherln("Que souhaitez-vous faire ?");
+		if(!bloque) {
+			Ecran.afficherln("  1- Piocher une carte");
+		} else {
+			if(!defense) {
+				Ecran.afficherln("  1- Piocher une carte pour essayer de vous débloquer");
+			} else {
+				Ecran.afficherln("  1- Utiliser votre carte défense pour vous débloquer");
+			}
+		}
+		Ecran.afficher("  2- Ne rien faire\n> ");
+		choix = Clavier.saisirInt();
+		while(choix < 1 || choix > 2) {
+			Ecran.afficher("ERREUR > ");
+			choix = Clavier.saisirInt();
+		}
+
+		// traitement
+		Ecran.sautDeLigne();
+		switch(choix) {
+			case 1:
+				if(!bloque) {
+					carteNum = tirerCarte(crt);
+					choisirActionCarte(carteNum, j1, j2);
+				} else {
+					if(!defense) {
+						do {
+							carteNum = tirerCarte(crt);
+						} while(carteNum < 20);
+							choisirActionCarte(carteNum, j1, j2);
+					} else {
+						Ecran.afficher("Vous n'êtes maintenant plus bloqué par une carte attaque !");
+						if(j1.carteAcc) {
+							j1.carteAcc = false;
+						} else {
+							if(j1.cartePde) {
+								j1.cartePde = false;
+							} else {
+								j1.carteCre = false;
+							}
+						}
+					}
+				}
+				break;
+			case 2:
+				Ecran.afficher("Vous ne jouez pas ce tour.");
+				break;
 		}
 	}
 

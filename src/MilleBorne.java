@@ -41,6 +41,7 @@ public class MilleBorne {
 	 *  - 33 : 100km
 	 *
 	 * @param carte Numéro de la carte
+	 * @return Nom de la carte
 	 */
 	public static String convertirCarte(int carte) {
 		// déclaration des données
@@ -152,7 +153,6 @@ public class MilleBorne {
 	 * Vérifier que le joueur n'est pas déjà bloqué par une carte
 	 *
 	 * @param jr Joueur qui doit être vérifié
-	 * @param carte Numéro de la carte
 	 * @return Vrai si le joueur est bloqué
 	 */
 	public static boolean estBloque(Joueur jr) {
@@ -362,6 +362,47 @@ public class MilleBorne {
 		}
 	}
 
+	/**
+	 * Tirer au sort quel joueur commence à jouer
+	 *
+	 * @param j1 joueur 1
+	 * @param j2 Joueur 2
+	 * @return Le numéro du joueur qui commence
+	 */
+	public static int tirerPremierJoueur(Joueur j1, Joueur j2) {
+		// déclaration des variables
+		int joueur;
+
+		// traitement et affichage
+		joueur = nbHasard(1, 2);
+		if(joueur == 1) {
+			Ecran.afficherln("\nC'est ", j1.nom, " qui commence à jouer !");
+		} else {
+			Ecran.afficherln("\nC'est ", j2.nom, " qui commence à jouer !");
+		}
+		Ecran.sautDeLigne();
+
+		return joueur;
+	}
+
+	/**
+	 * Afficher le gagnant de la partie
+	 *
+	 * @param j1 Joueur 1
+	 * @param j2 Joueur 2
+	 */
+	public static void afficherGagnant(Joueur j1, Joueur j2) {
+		if(j1.km > 1000 && j2.km > 1000) {
+			Ecran.afficherln("Egalité ! ", j1.nom, " et ", j2.nom, " ont réalisé plus de 1000 bornes  !");
+		} else {
+			if(j1.km > 1000) {
+				Ecran.afficherln(j1.nom, " gagne la partie !");
+			} else {
+				Ecran.afficherln(j2.nom, " gagne la partie !");
+			}
+		}
+	}
+
 	// ******************************
 	//  Fonctions & Actions
 	// ******************************
@@ -460,29 +501,6 @@ public class MilleBorne {
 	}
 
 	/**
-	 * Tirer au sort quel joueur commence à jouer
-	 *
-	 * @param j1 joueur 1
-	 * @param j2 Joueur 2
-	 * @return Le numéro du joueur qui commence
-	 */
-	public static int tirerPremierJoueur(Joueur j1, Joueur j2) {
-		// déclaration des variables
-		int joueur;
-
-		// traitement et affichage
-		joueur = nbHasard(1, 2);
-		if(joueur == 1) {
-			Ecran.afficherln("\nC'est ", j1.nom, " qui commence à jouer !");
-		} else {
-			Ecran.afficherln("\nC'est ", j2.nom, " qui commence à jouer !");
-		}
-		Ecran.sautDeLigne();
-
-		return joueur;
-	}
-
-	/**
 	 * Lancement de la partie principale du jeu
 	 *
 	 * @param j1 Joueur 1
@@ -534,13 +552,12 @@ public class MilleBorne {
 		int joueur;
 
 		// affichage du titre
-		Ecran.afficherln("JEU DU MILLE BORNES\n");
+		Ecran.afficherln("*** JEU DU MILLE BORNES ***\n");
 
 		// tours de jeu
 		jouerTour(j1, j2, crt);
-		// TODO problème en utilisant une carte defense stocké
 
 		// fin du jeu
-		// TODO fin du jeu
+		afficherGagnant(j1, j2);
 	}
 }

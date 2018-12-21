@@ -262,6 +262,7 @@ public class MilleBorne {
 			Ecran.afficher("Roue de secours");
 		if(!jr.carteRpt && !jr.carteEss && !jr.carteRds)
 			Ecran.afficher("aucune");
+		Ecran.sautDeLigne();
 	}
 
 	/**
@@ -288,7 +289,7 @@ public class MilleBorne {
 			}
 			jr.km += ajout;
 		} else {
-			Ecran.afficher("Vous êtes déjà bloqué par une carte attaque.");
+			Ecran.afficherln("Vous êtes déjà bloqué par une carte attaque.");
 		}
 	}
 
@@ -302,17 +303,19 @@ public class MilleBorne {
 	public static void ajouterAttaque(int carte, Joueur j1, Joueur j2) {
 		/** Vérifie si le joueur adverse est déjà bloqué par une carte attaque */
 		if(!estBloque(j2)) {
-			if(carte == 11) { // carte accident
-				j2.carteAcc = true;
-			} else {
-				if(carte == 12) { // carte panne d'essence
+			switch(carte) {
+				case 11:
+					j2.carteAcc = true;
+					break;
+				case 12:
 					j2.cartePde = true;
-				} else { // carte crevaison
+					break;
+				case 13:
 					j2.carteCre = true;
-				}
+					break;
 			}
 		} else {
-			Ecran.afficherln("Le joueur ", j2.nom, "possède déjà cette carte. Vous ne pouvez pas lui en donner une seconde.");
+			Ecran.afficherln(j2.nom, " possède déjà une carte attaque. Vous ne pouvez pas lui en donner une seconde...");
 		}
 	}
 
@@ -327,7 +330,7 @@ public class MilleBorne {
 			switch(carte) {
 				case 21:
 					if(jr.carteAcc) {
-						Ecran.afficher("La carte réparation annule la carte accident.");
+						Ecran.afficherln("La carte réparation annule la carte accident.");
 						jr.carteAcc = false;
 					} else {
 						Ecran.afficherln("Vous n'êtes pas bloqué par une carte accident pour le moment.");
@@ -336,20 +339,20 @@ public class MilleBorne {
 					break;
 				case 22:
 					if(jr.cartePde) {
-						Ecran.afficher("La carte essence annule la carte panne d'essence.");
+						Ecran.afficherln("La carte essence annule la carte panne d'essence.");
 						jr.cartePde = false;
 					} else {
-						Ecran.afficherln("Vous n'êtes pas bloqué par une carte accident pour le moment.");
+						Ecran.afficherln("Vous n'êtes pas bloqué par une carte panne d'essence pour le moment.");
 						stockerCarte(carte, jr);
 					}
 					break;
 				case 23:
 					if(jr.carteCre) {
-					Ecran.afficher("La carte roue de secours annule la carte crevaison.");
-					jr.carteCre = false;
-				} else {
-					Ecran.afficherln("Vous n'êtes pas bloqué par une carte crevaison pour le moment.");
-					stockerCarte(carte, jr);
+						Ecran.afficher("La carte roue de secours annule la carte crevaison.");
+						jr.carteCre = false;
+					} else {
+						Ecran.afficherln("Vous n'êtes pas bloqué par une carte crevaison pour le moment.");
+						stockerCarte(carte, jr);
 					}
 				break;
 			}
@@ -437,11 +440,14 @@ public class MilleBorne {
 						Ecran.afficher("Vous n'êtes maintenant plus bloqué par une carte attaque !");
 						if(j1.carteAcc) {
 							j1.carteAcc = false;
+							j1.carteRpt = false;
 						} else {
 							if(j1.cartePde) {
 								j1.cartePde = false;
+								j1.carteEss = false;
 							} else {
 								j1.carteCre = false;
+								j1.carteRds = false;
 							}
 						}
 					}
@@ -453,6 +459,69 @@ public class MilleBorne {
 		}
 	}
 
+	/**
+	 * Tirer au sort quel joueur commence à jouer
+	 *
+	 * @param j1 joueur 1
+	 * @param j2 Joueur 2
+	 * @return Le numéro du joueur qui commence
+	 */
+	public static int tirerPremierJoueur(Joueur j1, Joueur j2) {
+		// déclaration des variables
+		int joueur;
+
+		// traitement et affichage
+		joueur = nbHasard(1, 2);
+		if(joueur == 1) {
+			Ecran.afficherln("\nC'est ", j1.nom, " qui commence à jouer !");
+		} else {
+			Ecran.afficherln("\nC'est ", j2.nom, " qui commence à jouer !");
+		}
+		Ecran.sautDeLigne();
+
+		return joueur;
+	}
+
+	/**
+	 * Lancement de la partie principale du jeu
+	 *
+	 * @param j1 Joueur 1
+	 * @param j2 Joueur 2
+	 * @param crt Paquet de cartes
+	 */
+	public static void jouerTour(Joueur j1, Joueur j2, Carte crt) {
+		// saisie des noms
+		saisirNom(j1, j2);
+
+		// déclaration des données
+		int joueur = tirerPremierJoueur(j1, j2);
+
+		// boucle de jeu
+		do {
+			// choix de l'action de jeu
+			if(joueur == 1) {   // tour du joueur 1
+				Ecran.afficherln("Au tour de ", j1.nom, "...");
+				choisirJouerTour(j1, j2, crt);
+			} else { 			// tour du joueur 2
+				Ecran.afficherln("Au tour de ", j2.nom, "...");
+				choisirJouerTour(j2, j1, crt);
+			}
+
+			// affichage de l'état des joueurs
+			Ecran.sautDeLigne();
+			afficherJoueur(j1);
+			afficherJoueur(j2);
+			Ecran.sautDeLigne();
+
+			// changement de joueur
+			if(joueur == 1) {
+				joueur = 2;
+			} else {
+				joueur = 1;
+			}
+		} while(j1.km < 1000 || j2.km < 1000);
+	}
+
 	// ******************************
 	//  Main
 	// ******************************
@@ -462,37 +531,16 @@ public class MilleBorne {
 		Carte crt = new Carte();
 		Joueur j1 = new Joueur();
 		Joueur j2 = new Joueur();
+		int joueur;
 
-		// saisie des noms
-		saisirNom(j1, j2);
+		// affichage du titre
+		Ecran.afficherln("JEU DU MILLE BORNES\n");
 
-		/*
-		 * DEBUG
-		 */
+		// tours de jeu
+		jouerTour(j1, j2, crt);
+		// TODO problème en utilisant une carte defense stocké
 
-		// tour de jeu (pour Joueur 1)
-		Ecran.sautDeLigne();
-		Ecran.afficherln(j1.nom, " commence à jouer...");
-		choisirJouerTour(j1, j2, crt);
-
-		// affichage des joueurs
-		Ecran.sautDeLigne();
-		afficherJoueur(j1);
-		Ecran.sautDeLigne();
-		afficherJoueur(j2);
-
-		// CHANGEMENT DE JOUEUR
-
-		// tour de jeu (pour Joueur 2)
-		Ecran.sautDeLigne();
-		Ecran.sautDeLigne();
-		Ecran.afficherln(j2.nom, " joue,..");
-		choisirJouerTour(j2, j1, crt);
-
-		// affichage des joueurs
-		Ecran.sautDeLigne();
-		afficherJoueur(j1);
-		Ecran.sautDeLigne();
-		afficherJoueur(j2);
+		// fin du jeu
+		// TODO fin du jeu
 	}
 }

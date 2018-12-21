@@ -102,7 +102,7 @@ public class MilleBorne {
 
 		// initialisation des variables
 		/** le type de carte (Attaque, Défense, Distance) est compris entre 1 et 75
-		 *  c'est une des 100 cartes possibles */
+		 *  c'est une des 75 cartes possibles */
 		typeCarte = nbHasard(1, 75); // type de carte
 		/** chaque type de carte contient 3 cartes différentes */
 		numCarte = nbHasard(1, 3); // numéro de la carte
@@ -220,6 +220,19 @@ public class MilleBorne {
 		boolean carteRpt = false; // carte réparation
 		boolean carteEss = false; // carte essence
 		boolean carteRds = false; // carte roue de secours
+	}
+
+	/**
+	 * Saisir les noms des joueurs
+	 *
+	 * @param j1 Premier joueur
+	 * @param j2 Deuxième joueur
+	 */
+	public static void saisirNom(Joueur j1, Joueur j2) {
+		Ecran.afficher("Saisir le nom du joueur 1: ");
+		j1.nom = Clavier.saisirString();
+		Ecran.afficher("Saisir le nom du joueur 2: ");
+		j2.nom = Clavier.saisirString();
 	}
 
 	/**
@@ -361,6 +374,85 @@ public class MilleBorne {
 		return(borne_inf + (int)(Math.random() * (borne_sup - borne_inf + 1)));
 	}
 
+	/**
+	 * Jouer un tour de jeu, i.e. tirer une carte, retirer une attaque ou ne rien faire
+	 *
+	 * @param j1 Joueur qui joue le tour
+	 * @param j2 Joueur adverse
+	 * @param crt Paquet de carte
+	 */
+	public static void choisirJouerTour(Joueur j1, Joueur j2, Carte crt) {
+		// déclaration des données
+		boolean bloque = false, defense = false;
+		int choix, carteNum;
+
+		// vérificationd de l'état du joueur
+		if(estBloque(j1)) {
+			bloque = true;
+			if(j1.carteAcc && j1.carteRpt) {
+				defense = true;
+			} else {
+				if(j1.cartePde && j1.carteEss) {
+					defense = true;
+				} else {
+					if(j1.carteCre && j1.carteRds) {
+						defense = true;
+					}
+				}
+			}
+		}
+
+		// proposition et choix
+		Ecran.afficherln("Que souhaitez-vous faire ?");
+		if(!bloque) {
+			Ecran.afficherln("  1- Piocher une carte");
+		} else {
+			if(!defense) {
+				Ecran.afficherln("  1- Piocher une carte pour essayer de vous débloquer");
+			} else {
+				Ecran.afficherln("  1- Utiliser votre carte défense pour vous débloquer");
+			}
+		}
+		Ecran.afficher("  2- Ne rien faire\n> ");
+		choix = Clavier.saisirInt();
+		while(choix < 1 || choix > 2) {
+			Ecran.afficher("ERREUR > ");
+			choix = Clavier.saisirInt();
+		}
+
+		// traitement
+		Ecran.sautDeLigne();
+		switch(choix) {
+			case 1:
+				if(!bloque) {
+					carteNum = tirerCarte(crt);
+					choisirActionCarte(carteNum, j1, j2);
+				} else {
+					if(!defense) {
+						do {
+							carteNum = tirerCarte(crt);
+						} while(carteNum < 20);
+							choisirActionCarte(carteNum, j1, j2);
+					} else {
+						Ecran.afficher("Vous n'êtes maintenant plus bloqué par une carte attaque !");
+						if(j1.carteAcc) {
+							j1.carteAcc = false;
+						} else {
+							if(j1.cartePde) {
+								j1.cartePde = false;
+							} else {
+								j1.carteCre = false;
+							}
+						}
+					}
+				}
+				break;
+			case 2:
+				Ecran.afficher("Vous ne jouez pas ce tour.");
+				break;
+		}
+	}
+
 	// ******************************
 	//  Main
 	// ******************************
@@ -372,20 +464,30 @@ public class MilleBorne {
 		Joueur j2 = new Joueur();
 
 		// saisie des noms
-		Ecran.afficher("Saisir le nom du joueur 1: ");
-		j1.nom = Clavier.saisirString();
-		Ecran.afficher("Saisir le nom du joueur 2: ");
-		j2.nom = Clavier.saisirString();
+		saisirNom(j1, j2);
 
 		/*
 		 * DEBUG
 		 */
 
-		// tirage de la carte (tour de joueur 1)
+		// tour de jeu (pour Joueur 1)
 		Ecran.sautDeLigne();
-		int carte = tirerCarte(crt);
 		Ecran.afficherln(j1.nom, " commence à jouer...");
-		choisirActionCarte(carte, j1, j2);
+		choisirJouerTour(j1, j2, crt);
+
+		// affichage des joueurs
+		Ecran.sautDeLigne();
+		afficherJoueur(j1);
+		Ecran.sautDeLigne();
+		afficherJoueur(j2);
+
+		// CHANGEMENT DE JOUEUR
+
+		// tour de jeu (pour Joueur 2)
+		Ecran.sautDeLigne();
+		Ecran.sautDeLigne();
+		Ecran.afficherln(j2.nom, " joue,..");
+		choisirJouerTour(j2, j1, crt);
 
 		// affichage des joueurs
 		Ecran.sautDeLigne();

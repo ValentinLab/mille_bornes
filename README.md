@@ -4,9 +4,9 @@
 <p align="center">The Mille Bornes card game developed with Java.</p>
 
 <p align="center">
-[![ProjectLanguage](https://img.shields.io/badge/built%20with-Java-brightgreen.svg)](https://github.com/ValentinLab/mille_bornes)
-![License](https://img.shields.io/github/license/ValentinLab/mille_bornes.svg)
-[![Doc](https://img.shields.io/badge/docs-Javadoc-green.svg)](https://github.com/ValentinLab/mille_bornes/tree/master/javadoc)
+  <a href="https://github.com/ValentinLab/mille_bornes"><img src="https://img.shields.io/badge/built%20with-Java-brightgreen.svg"></a>
+  <a href="https://github.com/ValentinLab/mille_bornes/tree/master/LICENSE.txt"><img src="https://img.shields.io/github/license/ValentinLab/mille_bornes.svg"></a>
+  <a href="https://github.com/ValentinLab/mille_bornes/tree/master/javadoc"><img src="https://img.shields.io/badge/docs-Javadoc-green.svg"></a>
 </p>
 
 ## About
